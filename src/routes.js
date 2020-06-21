@@ -1,18 +1,15 @@
 import { Router } from 'express';
 
-import Teste from './app/models/Teste';
+import AuthRestEndPoint from './app/routes/AuthRestEndPoint';
+import UserRestEndPoint from './app/routes/UserRestEndPoint';
 
+import Auth from './app/middlewares/auth';
+
+const rests = [AuthRestEndPoint, UserRestEndPoint];
 const routes = new Router();
 
-routes.get('/', async (req, res) => {
-  const teste = await Teste.create({
-    name: 'Teste 5',
-    email: 'teste5@teste.com',
-    password_hash: 'teste',
-    conditional: true,
-  });
-
-  return res.json(teste);
+rests.forEach((rest) => {
+  rest.init(routes, Auth);
 });
 
 export default routes;
